@@ -1,14 +1,13 @@
-from django.contrib.auth import get_user_model
-
-# from config import celery_app
-
-from celery import shared_task
-
-User = get_user_model()
+from django.conf import settings
+import requests
+from app.utils.retry import retry
 
 
-# @celery_app.task()
-@shared_task
-def get_users_count():
-    """A pointless Celery task to demonstrate usage."""
-    return User.objects.count()
+@retry
+def validate_email(email):
+    resp = requests.get(
+        f"https://emailvalidation.abstractapi.com/v1/?api_key={settings.ABSTRACT_API_KEY_EMAIL}&email={email}"
+    )
+    print(resp.status_code)
+    print(resp.content)
+    return resp
