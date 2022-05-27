@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.postgres.fields import ArrayField
 
 
 class UserManager(BaseUserManager):
@@ -26,6 +27,10 @@ class User(AbstractUser):
 
     username = None  # type: ignore
     email = models.EmailField(_("Email"), blank=True, unique=True)
+    geo_data = models.JSONField(_("GEO Data"), blank=True, null=True)
+    register_in_holiday = ArrayField(
+        models.CharField(max_length=30, blank=True), size=10, blank=True, null=True
+    )
 
     objects = UserManager()
 
