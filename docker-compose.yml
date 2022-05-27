@@ -50,6 +50,14 @@ services:
     ports: []
     command: /start-celeryworker
 
+  flower:
+    <<: *django
+    image: app_local_flower
+    container_name: app_local_flower
+    ports:
+      - "5555:5555"
+    command: /start-flower
+
   # celerybeat:
   #   <<: *django
   #   image: app_local_celerybeat
@@ -59,11 +67,3 @@ services:
   #     - postgres
   #   ports: []
   #   command: /start-celerybeat
-
-  flower:
-    <<: *django
-    image: app_local_flower
-    container_name: app_local_flower
-    ports:
-      - "5555:5555"
-    command: /start-flower

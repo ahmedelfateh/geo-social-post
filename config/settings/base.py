@@ -2,6 +2,8 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
+from datetime import timedelta
+
 
 import environ
 
@@ -289,12 +291,15 @@ CORS_URLS_REGEX = r"^/api/.*$"
 # >> JWT Support for REST
 # ------------------------------------------------------------------------------
 # https://github.com/jazzband/djangorestframework-simplejwt
-from datetime import timedelta
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
     "ALGORITHM": "HS256",
     "VERIFYING_KEY": None,
     "AUDIENCE": None,
     "ISSUER": None,
 }
+
+ABSTRACT_API_KEY_EMAIL = env("ABSTRACT_API_KEY_EMAIL")
+ABSTRACT_API_KEY_IP = env("ABSTRACT_API_KEY_IP")
+ABSTRACT_API_KEY_HOLYDAY = env("ABSTRACT_API_KEY_HOLYDAY")
