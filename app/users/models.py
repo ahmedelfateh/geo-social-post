@@ -37,10 +37,14 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name"]
 
+    def __str__(self):
+        return f"{self.first_name} ({self.email})"
+
     class Meta:
         ordering = ["first_name", "email"]
         verbose_name = "User"
         verbose_name_plural = "Users"
 
-    def __str__(self):
-        return f"{self.first_name} ({self.email})"
+    @property
+    def user_post_count(self):
+        return len(self.user.posts.all())
