@@ -1,0 +1,49 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/geo-social-post
+    docker:
+      - image: circleci/python:3.8.1
+        environment:
+          DJANGO_SECRET_KEY: root5a)6@quf(e=t3cxbai8b#8-)h^km4e*nq(c1by!23k5=(pu%uf	DJANGO_SECRET_KEY=root5a)6@quf(e=t3cxbai8b#8-)h^km4e*nq(c1by!23k5=(pu%uf
+          POSTGRES_DB: app
+          POSTGRES_USER: OEsxqkprwhOykzTMeOxPbzXeRVNCPlbc
+          POSTGRES_PASSWORD: NIjomg8WOTL5nMql4K3Z7HWHgHwTVo2h11eobPIYj4ypmT4nPRYbHuYy4TpPRjPf
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: 5432
+          ABSTRACT_API_KEY_EMAIL: ""
+          ABSTRACT_API_KEY_IP: ""
+          ABSTRACT_API_KEY_HOLYDAY: ""
+          CELERY_BROKER_URL: ""
+      - image: postgres:11.0-alpine
+        environment:
+          POSTGRES_USER: OEsxqkprwhOykzTMeOxPbzXeRVNCPlbc
+          POSTGRES_DB: NIjomg8WOTL5nMql4K3Z7HWHgHwTVo2h11eobPIYj4ypmT4nPRYbHuYy4TpPRjPf
+    steps:
+      - checkout
+      # - setup_remote_docker:
+      #     docker_layer_caching: true
+      - restore_cache: # **restores saved dependency cache if the Branch key template or requirements.txt files have not changed since the previous run**
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/local.txt" }}
+      - run: # install and activate virtual environment with pip
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements/local.txt
+      - save_cache: # ** special step to save dependency cache **
+          key: deps1-{{ .Branch }}-{{ checksum "requirements/local.txt" }}
+          paths:
+            - "venv"
+
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            python manage.py test
+            flake8
+
+      - store_test_results:
+          path: test-results
+
+      - store_artifacts:
+          path: test-results

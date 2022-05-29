@@ -12,18 +12,22 @@ from celery import chain
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        read_only_fields = (
-            "id",
-            "geo_data",
-            "register_in_holiday",
-        )
+        read_only_fields = ("id", "geo_data", "register_in_holiday", "user_post_count")
         fields = (
             "id",
             "email",
             "first_name",
             "geo_data",
             "register_in_holiday",
+            "user_post_count",
         )
+
+
+class MonoUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        read_only_fields = ("id", "email", "first_name", "user_post_count")
+        fields = ("id", "email", "first_name", "user_post_count")
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
