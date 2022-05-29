@@ -6,7 +6,6 @@ from datetime import date
 
 from celery import Celery
 
-
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
 
@@ -39,10 +38,13 @@ def get_geo_data(self, user_id):
     from app.users.models import User
 
     user = User.objects.get(id=user_id)
+    if settings.DEPLOYMENT == "TEST":
+        user.register_in_holiday = {"geo_data": {"lat": "0", "lng": "0"}}
+        user.save()
+        return {}
     resp = requests.get(
         f"https://ipgeolocation.abstractapi.com/v1/?api_key={settings.ABSTRACT_API_KEY_IP}"
     )
-    print(json.loads(resp.content))
     user.geo_data = json.loads(resp.content)
     user.save()
 
@@ -52,17 +54,13 @@ def get_holiday(self, user_id):
     from app.users.models import User
 
     user = User.objects.get(id=user_id)
-    print(user)
+    if settings.DEPLOYMENT == "TEST":
+        user.register_in_holiday = ["test holiday"]
+        user.save()
+        return {}
     country = user.geo_data.get("country_code")
-    print(country)
     resp = requests.get(
         f"https://holidays.abstractapi.com/v1/?api_key={settings.ABSTRACT_API_KEY_HOLYDAY}&country={country}&year={date.today().year}&month={date.today().month}&day={date.today().day}"
     )
-    # resp = requests.get(
-    #     f"https://holidays.abstractapi.com/v1/?api_key={settings.ABSTRACT_API_KEY_HOLYDAY}&country={country}&year=2022&month=05&day=01"
-    # )
-    print(json.loads(resp.content))
-    for x in json.loads(resp.content):
-        print(x.get("name"))
     user.register_in_holiday = [x.get("name") for x in json.loads(resp.content)]
     user.save()

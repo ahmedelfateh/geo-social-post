@@ -77,6 +77,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "app.users",
+    "app.posts",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -122,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -280,6 +280,8 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": env("PAGINATION_PAGE_SIZE", default=10),
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
@@ -300,6 +302,7 @@ SIMPLE_JWT = {
     "ISSUER": None,
 }
 
-ABSTRACT_API_KEY_EMAIL = env("ABSTRACT_API_KEY_EMAIL")
-ABSTRACT_API_KEY_IP = env("ABSTRACT_API_KEY_IP")
-ABSTRACT_API_KEY_HOLYDAY = env("ABSTRACT_API_KEY_HOLYDAY")
+DEPLOYMENT = env("DEPLOYMENT", default="LOCAL")
+ABSTRACT_API_KEY_EMAIL = env("ABSTRACT_API_KEY_EMAIL", default="")
+ABSTRACT_API_KEY_IP = env("ABSTRACT_API_KEY_IP", default="")
+ABSTRACT_API_KEY_HOLYDAY = env("ABSTRACT_API_KEY_HOLYDAY", default="")
