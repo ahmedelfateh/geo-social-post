@@ -6,19 +6,19 @@ jobs:
       - image: circleci/python:3.8.1
         environment:
           DJANGO_SECRET_KEY: root5a)6@quf(e=t3cxbai8b#8-)h^km4e*nq(c1by!23k5=(pu%uf	DJANGO_SECRET_KEY=root5a)6@quf(e=t3cxbai8b#8-)h^km4e*nq(c1by!23k5=(pu%uf
-          POSTGRES_DB: app
-          POSTGRES_USER: OEsxqkprwhOykzTMeOxPbzXeRVNCPlbc
-          POSTGRES_PASSWORD: NIjomg8WOTL5nMql4K3Z7HWHgHwTVo2h11eobPIYj4ypmT4nPRYbHuYy4TpPRjPf
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: 5432
+          DATABASE_URL: postgres://user@localhost:5432/app
+          USE_DOCKER: true
           ABSTRACT_API_KEY_EMAIL: ""
           ABSTRACT_API_KEY_IP: ""
           ABSTRACT_API_KEY_HOLYDAY: ""
           CELERY_BROKER_URL: ""
       - image: postgres:11.0-alpine
         environment:
-          POSTGRES_USER: OEsxqkprwhOykzTMeOxPbzXeRVNCPlbc
-          POSTGRES_DB: NIjomg8WOTL5nMql4K3Z7HWHgHwTVo2h11eobPIYj4ypmT4nPRYbHuYy4TpPRjPf
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_DB: app
+          POSTGRES_USER: user
+          # POSTGRES_PASSWORD: NIjomg8WOTL5nMql4K3Z7HWHgHwTVo2h11eobPIYj4ypmT4nPRYbHuYy4TpPRjPf
     steps:
       - checkout
       # - setup_remote_docker:
