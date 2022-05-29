@@ -1,5 +1,4 @@
 from test_plus.test import TestCase
-from unittest import mock
 from rest_framework.test import APIClient
 from rest_framework import status
 

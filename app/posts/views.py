@@ -2,7 +2,6 @@ from rest_framework import views, response, status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from app.utils.permissions import IsOwnerOrReadOnly
 from app.posts.models import Post
 from app.posts.serializers import PostSerializer, MonoPostSerializer
 
@@ -47,16 +46,14 @@ class PostsAllList(generics.ListAPIView):
     queryset = Post.objects.all()
 
 
-class PostRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+class PostRetrieveUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
     authentication_classes = (JWTAuthentication,)
     serializer_class = PostSerializer
     lookup_field = "id"
 
     def get_object(self):
-        return generics.get_object_or_404(
-            Post, id=self.kwargs.get("id")
-        )
+        return generics.get_object_or_404(Post, id=self.kwargs.get("id"))
 
     def patch(self, request, *args, **kwargs):
         if self.get_object().user != request.user:
@@ -65,6 +62,14 @@ class PostRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
                 status=status.HTTP_403_FORBIDDEN,
             )
         return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        if self.get_object().user != request.user:
+            return response.Response(
+                {"message": "You are not allowed to perform this action"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+        return self.destroy(request, *args, **kwargs)
 
 
 class LikeUnlikeAPIView(views.APIView):
