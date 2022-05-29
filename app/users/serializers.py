@@ -4,7 +4,6 @@ from app.users.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from app.users.tasks import validate_email
-import json
 from config.celery_app import get_geo_data, get_holiday
 from celery import chain
 
@@ -63,10 +62,7 @@ class RegisterSerializer(serializers.ModelSerializer):
                 {"password": "Password fields didn't match."}
             )
 
-        if (
-            json.loads(validate_email(attrs["email"]).content).get("deliverability")
-            != "DELIVERABLE"
-        ):
+        if validate_email(attrs["email"]) != "DELIVERABLE":
             raise serializers.ValidationError({"email": "This email is not valid."})
 
         return attrs
