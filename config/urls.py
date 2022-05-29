@@ -4,9 +4,37 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views import defaults as default_views
 
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Social Post API",
+        default_version="v1",
+        description="You will need this!",
+        terms_of_service="",
+        contact=openapi.Contact(email="elfateh.dev@gmail.com"),
+        license=openapi.License(name="Proprietary"),
+    ),
+    public=False,
+    permission_classes=(permissions.IsAuthenticated,),
+)
+
+
 api_urlpatterns = [
     path("users/", include("app.users.urls")),
     path("posts/", include("app.posts.urls")),
+    re_path(
+        r"^swagger(?P<format>\.json|\.yaml)$",
+        schema_view.without_ui(cache_timeout=0),
+        name="schema-json",
+    ),
+    re_path(
+        r"^swagger/$",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
 ]
 
 urlpatterns = [

@@ -1,74 +1,67 @@
-# geo-social-post
+<h1 align="center">  Geo Social Posts </h1>
 
-sicail geo for all the world!
-
+[![Django](https://img.shields.io/badge/Django-3.2.13-blue)](https://github.com/django/django/tree/3.2.13)
+[![Python](https://img.shields.io/badge/python-3.8.1-blue)](https://github.com/python/cpython/tree/v3.8.1)
+[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
-[![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
-
-License: MIT
-
-## Settings
-
-Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings.html).
 
 ## Basic Commands
 
-### Setting Up Your Users
+### setup the development environment
 
--   To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+1. [Install docker on you platform.](https://docs.docker.com/docker-for-windows/install/)
+2. [Install docker-compose on your platform.](https://docs.docker.com/compose/install/)
+3. Run the Development environment:
 
--   To create a **superuser account**, use this command:
+- create and launch the Project
 
-        $ python manage.py createsuperuser
-
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
-
-### Type checks
-
-Running type checks with mypy:
-
-    $ mypy app
-
-### Test coverage
-
-To run the tests, check your test coverage, and generate an HTML coverage report:
-
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
-
-#### Running tests with pytest
-
-    $ pytest
-
-### Live reloading and Sass CSS compilation
-
-Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally.html#sass-compilation-live-reloading).
-
-### Celery
-
-This app comes with Celery.
-
-To run a celery worker:
-
-``` bash
-cd app
-celery -A config.celery_app worker -l info
+```bash
+    git clone https://github.com/ahmedelfateh/geo-social-post
+    cd geo-social-post
+    docker-compose up --build
 ```
 
-Please note: For Celery's import magic to work, it is important *where* the celery commands are run. If you are in the same folder with *manage.py*, you should be right.
+4. Open another terminal tab, to migrate DB:
 
-### Sentry
+```bash
+    docker-compose run --rm django ./manage.py migrate
+```
 
-Sentry is an error logging aggregator service. You can sign up for a free account at <https://sentry.io/signup/?code=cookiecutter> or download and host it yourself.
-The system is set up with reasonable defaults, including 404 logging and integration with the WSGI application.
+### run development environment **Recurring Task** 🔃
 
-You must set the DSN url in production.
+```bash
+    docker-compose up
+```
 
-## Deployment
+> **HINT**: Be sure to run "docker-compose up --build" if any requirements changed or updated, run it with every pull any way.
 
-The following details how to deploy this application.
+### Setting Up Your Users
 
-### Docker
+- To create an **superuser account**, start in the root folder and use this command:
 
-See detailed [cookiecutter-django Docker documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html).
+```bash
+    docker-compose run --rm django ./manage.py createsuperuser
+```
+
+### Testing
+
+- Run tests, for all apps:
+
+> **HINT**: To run tests, you need to change DEPLOYMENT env var to "TEST" for more clean test running
+
+```bash
+    docker-compose run --rm django ./manage.py test
+```
+
+### Code Quality / Style
+
+```bash
+    docker-compose run --rm django ./manage.py black .
+    docker-compose run --rm django ./manage.py flake8
+```
+
+## Access App
+
+- you can access the App Admin on [Admin](http://localhost:8000/admin)
+- you can access swagger docs for API on [Swagger](http://localhost:8000/api/v1/swagger/)
+- you can access the Celery Flower on (user:admin/pass:admin0) [Flower](http://localhost:5555)

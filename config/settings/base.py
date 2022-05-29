@@ -72,7 +72,7 @@ THIRD_PARTY_APPS = [
     "crispy_bootstrap5",
     "rest_framework",
     "corsheaders",
-    # "django_celery_beat",
+    "drf_yasg",
 ]
 
 LOCAL_APPS = [
@@ -275,6 +275,7 @@ CELERY_TASK_SOFT_TIME_LIMIT = 60
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.BasicAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -286,6 +287,13 @@ REST_FRAMEWORK = {
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
+
+
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    }
+}
 
 # Your stuff...
 # ------------------------------------------------------------------------------
@@ -302,6 +310,7 @@ SIMPLE_JWT = {
     "ISSUER": None,
 }
 
+DEPLOYMENT = "TEST"
 DEPLOYMENT = env("DEPLOYMENT", default="LOCAL")
 ABSTRACT_API_KEY_EMAIL = env("ABSTRACT_API_KEY_EMAIL", default="")
 ABSTRACT_API_KEY_IP = env("ABSTRACT_API_KEY_IP", default="")
