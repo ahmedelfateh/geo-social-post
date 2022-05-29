@@ -30,11 +30,6 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend"
 )
 
-# WhiteNoise
-# ------------------------------------------------------------------------------
-# http://whitenoise.evans.io/en/latest/django.html#using-whitenoise-in-development
-INSTALLED_APPS = ["whitenoise.runserver_nostatic"] + INSTALLED_APPS  # noqa F405
-
 # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html#internal-ips
 INTERNAL_IPS = ["127.0.0.1", "10.0.2.2"]
 if env("USE_DOCKER") == "yes":
