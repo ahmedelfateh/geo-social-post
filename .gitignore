@@ -279,6 +279,7 @@ app/media/
 !.envs/.local/
 
 ### VisualStudioCode template
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
