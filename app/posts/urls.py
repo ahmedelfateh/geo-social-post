@@ -6,6 +6,8 @@ from app.posts.views import (
     LikeUnlikeAPIView,
 )
 
+app_name = "posts"
+
 urlpatterns = [
     path("", PostListCreateAPIView.as_view(), name="post_list_create"),
     path("all/", PostsAllList.as_view(), name="post_list_all"),
