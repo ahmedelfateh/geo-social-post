@@ -1,7 +1,7 @@
 <h1 align="center">  Geo Social Posts </h1>
 
 [![Django](https://img.shields.io/badge/Django-3.2.13-blue)](https://github.com/django/django/tree/3.2.13)
-[![Python](https://img.shields.io/badge/python-3.8.1-blue)](https://github.com/python/cpython/tree/v3.8.1)
+[![Python](https://img.shields.io/badge/python-3.8.3-blue)](https://github.com/python/cpython/tree/v3.8.3)
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
 
@@ -62,6 +62,24 @@
 
 ## Access App
 
-- you can access the App Admin on [Admin](http://localhost:8000/admin)
+- you can access the App Admin on [Admin](http://localhost:8000/admin/)
 - you can access swagger docs for API on [Swagger](http://localhost:8000/api/v1/swagger/)
-- you can access the Celery Flower on (user:admin/pass:admin0) [Flower](http://localhost:5555)
+- you can access the Celery Flower on (user:admin/pass:admin0) [Flower](http://localhost:5555/)
+
+
+## Technical Choices
+
+- [Docker](https://docs.docker.com/docker-for-windows/install/)
+for running the development environment, to preserve the stability of the project running, development, debugging and testing accordingly across all OSs.
+
+- [Celery](https://docs.celeryproject.org/en/stable/)
+for the asynchronous tasks, to run the tasks in the background, without blocking the main thread.
+
+- [redis](https://redis.io/)
+as a cache/message broker, to store the data in the background, without blocking the main thread.
+
+- [Flake8](https://flake8.pycqa.org/)
+for code quality, to check the code style.
+
+- [Black](https://black.readthedocs.io/en/stable/)
+for code style, to check the code style.

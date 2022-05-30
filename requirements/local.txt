@@ -8,7 +8,6 @@ watchgod==0.8.2  # https://github.com/samuelcolvin/watchgod
 # Testing
 # ------------------------------------------------------------------------------
 factory-boy==3.2.1  # https://github.com/FactoryBoy/factory_boy
-Faker==4.1.2  # https://github.com/joke2k/faker
 django-test-plus==2.2.0  # https://github.com/revsys/django-test-plus
 
 # Code quality
@@ -16,7 +15,6 @@ django-test-plus==2.2.0  # https://github.com/revsys/django-test-plus
 flake8==4.0.1  # https://github.com/PyCQA/flake8
 black==22.3.0  # https://github.com/psf/black
 flake8-black==0.2.4  # https://github.com/peterjc/flake8-black
-flake8-isort==4.1.1  # https://github.com/gforcada/flake8-isort
 coverage==6.4  # https://github.com/nedbat/coveragepy
 
 # Django

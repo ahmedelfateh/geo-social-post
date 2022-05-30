@@ -68,10 +68,9 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
-    "crispy_forms",
-    "crispy_bootstrap5",
     "rest_framework",
     "corsheaders",
+    "drf_spectacular",
     "drf_yasg",
 ]
 
@@ -184,10 +183,6 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/dev/ref/settings/#form-renderer
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
-# http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = "bootstrap5"
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
 # FIXTURES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#fixture-dirs
@@ -283,16 +278,31 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": env("PAGINATION_PAGE_SIZE", default=10),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
 
+# By Default swagger ui is available only to admin user(s). You can change permission classes to change that
+# See more configuration options at https://drf-spectacular.readthedocs.io/en/latest/settings.html#settings
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Social Post API",
+    "DESCRIPTION": "Documentation of API endpoints of Social Post",
+    "VERSION": "1.0.0",
+    "SERVE_PERMISSIONS": ["rest_framework.permissions.IsAdminUser"],
+    "SERVERS": [
+        {"url": "http://127.0.0.1:8000", "description": "Local Development server"},
+        {"url": "https://example.com", "description": "Production server"},
+    ],
+}
 
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
-    }
+    },
+    "LOGOUT_URL": "http://localhost:8000/admin/logout/",
+    "LOGIN_URL": "http://localhost:8000/admin/login/",
 }
 
 # Your stuff...
@@ -310,7 +320,7 @@ SIMPLE_JWT = {
     "ISSUER": None,
 }
 
-DEPLOYMENT = "TEST"
+# DEPLOYMENT = "TEST"
 DEPLOYMENT = env("DEPLOYMENT", default="LOCAL")
 ABSTRACT_API_KEY_EMAIL = env("ABSTRACT_API_KEY_EMAIL", default="")
 ABSTRACT_API_KEY_IP = env("ABSTRACT_API_KEY_IP", default="")
